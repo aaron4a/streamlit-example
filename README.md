@@ -17,7 +17,7 @@ cd streamlit-example
 
 2. Ejecutar el entorno VENV :
 ```bash
-./exe.venv.sh
+./exe_venv.sh
 ```
 3. Acceder a la pagina WEB :
    localhost : 8501
