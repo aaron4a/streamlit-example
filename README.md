@@ -20,5 +20,6 @@ cd streamlit-example
 ./exe.venv.sh
 ```
 3. Acceder a la pagina WEB :
+   localhost : 8501
 
 
