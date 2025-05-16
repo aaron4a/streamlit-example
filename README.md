@@ -14,3 +14,8 @@ Esta aplicacion consulta a la API "coingecko" el valor de algunas criptomonedas.
 git clone https://github.com/tu-usuario/streamlit-example.git
 cd streamlit-example
 ```
+
+2. Ejecutar el entorno VENV :
+```bash
+./
+```
