@@ -20,8 +20,14 @@ jobs:
 #    - name: Build and run new container
 #      run: docker compose up -d --build
 
+#    - name: Notify on Discord
+#      uses: Ilshidur/action-discord@master
+#      with:
+#        webhook: ${{ secrets.DISCORD_WEBHOOK }}
+#        message: "🚀 FastAPI desplegado en servidor local tras merge en develop."
     - name: Notify on Discord
-      uses: Ilshidur/action-discord@master
-      with:
-        webhook: ${{ secrets.DISCORD_WEBHOOK }}
-        message: "🚀 FastAPI desplegado en servidor local tras merge en develop."
+  	  uses: Ilshidur/action-discord@master
+  	  with:
+    	  args: "🚀 FastAPI desplegado en servidor local tras merge en develop."
+  	  env:
+    	  DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
