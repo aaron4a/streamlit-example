@@ -28,6 +28,6 @@ jobs:
     - name: Notify on Discord
   	  uses: Ilshidur/action-discord@master
   	  with:
-    	  args: "🚀 FastAPI desplegado en servidor local tras merge en develop."
+    	    args: "🚀 FastAPI desplegado en servidor local tras merge en develop."
   	  env:
-    	  DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+    	    DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
