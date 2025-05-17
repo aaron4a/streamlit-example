@@ -1,0 +1,5 @@
+site_name: Documentación Streamlit
+nav:
+  - Información: informacion.md   # (README.md)
+  - Contribuir: contribuir.md
+  - Licencia: license.md
