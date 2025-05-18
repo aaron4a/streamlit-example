@@ -1,50 +1,72 @@
 import streamlit as st
 import requests
-import pandas as pd
-import plotly.express as px
 
-st.set_page_config(page_title="Crypto Dashboard", layout="wide")
-st.title("📈 Dashboard de Criptomonedas - Datos de CoinGecko")
+@st.cache_data
+def get_pokemon_list():
+    r = requests.get("https://pokeapi.co/api/v2/pokemon?limit=1000")
+    if r.status_code == 200:
+        return [p["name"] for p in r.json()["results"]]
+    return []
 
-# Lista de algunas criptomonedas populares
-coins = {
-    "Bitcoin": "bitcoin",
-    "Ethereum": "ethereum",
-    "Cardano": "cardano",
-    "Solana": "solana",
-    "Dogecoin": "dogecoin"
-}
+@st.cache_data
+def get_pokemon_data(name):
+    url = f"https://pokeapi.co/api/v2/pokemon/{name.lower()}"
+    r = requests.get(url)
+    return r.json() if r.status_code == 200 else None
 
-coin_name = st.selectbox("Selecciona una criptomoneda", list(coins.keys()))
-coin_id = coins[coin_name]
+# 🌙 Tema oscuro
+st.set_page_config(page_title="Pokédex Oscura", page_icon="🖤", layout="centered")
+st.markdown("""
+    <style>
+    body {
+        background-color: #000000 !important;
+        color: #ffffff !important;
+    }
+    .stApp {
+        background-color: #000000;
+        color: #ffffff;
+    }
+    .css-1cpxqw2, .css-10trblm, .stTextInput > div > div > input,
+    .stSelectbox, .stButton button {
+        background-color: #1e1e1e !important;
+        color: #ffffff !important;
+        border-radius: 10px;
+    }
+    .stMarkdown, .stSubheader {
+        color: #ffffff !important;
+    }
+    .stProgress > div > div {
+        background-color: #ff4b4b;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
-# Selección de días
-days = st.slider("Cantidad de días a mostrar", min_value=1, max_value=90, value=30)
+st.title("🌑 Pokédex en Modo Oscuro")
 
-# Obtener datos de la API de CoinGecko
-url = f"https://api.coingecko.com/api/v3/coins/{coin_id}/market_chart"
-params = {
-    "vs_currency": "usd",
-    "days": days
-}
-res = requests.get(url, params=params)
-data = res.json()
+pokemon_list = get_pokemon_list()
+pokemon_name = st.selectbox("Escribí o elegí un Pokémon:", pokemon_list)
 
-# Procesar datos
-prices = pd.DataFrame(data["prices"], columns=["timestamp", "price"])
-volumes = pd.DataFrame(data["total_volumes"], columns=["timestamp", "volume"])
-prices["timestamp"] = pd.to_datetime(prices["timestamp"], unit='ms')
-volumes["timestamp"] = pd.to_datetime(volumes["timestamp"], unit='ms')
+if st.button("🔍 Buscar"):
+    data = get_pokemon_data(pokemon_name)
+    if data:
+        st.image(data["sprites"]["other"]["official-artwork"]["front_default"], width=250)
+        st.subheader(f"📛 Nombre: `{data['name'].capitalize()}`")
 
-# Gráficos
-col1, col2 = st.columns(2)
+        col1, col2 = st.columns(2)
 
-with col1:
-    st.subheader(f"Precio de {coin_name} (USD)")
-    fig_price = px.line(prices, x="timestamp", y="price", title="Precio")
-    st.plotly_chart(fig_price, use_container_width=True)
+        with col1:
+            st.markdown("### 🧬 Stats")
+            for stat in data["stats"]:
+                st.progress(min(stat["base_stat"] / 150, 1.0))
+                st.write(f"{stat['stat']['name'].capitalize()}: {stat['base_stat']}")
 
-with col2:
-    st.subheader(f"Volumen de {coin_name}")
-    fig_volume = px.area(volumes, x="timestamp", y="volume", title="Volumen")
-    st.plotly_chart(fig_volume, use_container_width=True)
+        with col2:
+            st.markdown("### 📘 Tipos")
+            for t in data["types"]:
+                st.success(f"🔹 {t['type']['name'].capitalize()}")
+
+        st.markdown("### ⚔️ Movimientos principales")
+        for move in data["moves"][:5]:
+            st.code(move["move"]["name"])
+    else:
+        st.error("❌ Pokémon no encontrado.")
