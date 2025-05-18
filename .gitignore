@@ -5,4 +5,15 @@ __pycache__/
 .idea/
 .DS_Store
 .streamlit/
+
+# Entornos virtuales
+.venv/
+.virtualenv/
+*.pyo
+*.pyd
+
+# Archivos de entorno virtual ocultos (para algunos entornos en Linux/macOS)
+.pip/
+.python-version
+
 actions-runner/
