@@ -2,7 +2,7 @@
 
 Una aplicación simple hecha con [Streamlit](https://streamlit.io/). Puedes ejecutarla en tu máquina usando un entorno virtual o Docker.
 
-Esta aplicacion consulta a la API "pokeapi" caracteristicas del Pokemon que busques.
+Esta aplicacion consulta a la API "pokeapi" caracteristicas del Pokemon que busques. 
 
 ---
 
